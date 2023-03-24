@@ -43,18 +43,18 @@ jobs:
 
   Update_Inventory:
     docker:
-      - image: amazon/aws-cli
       - image: circleci/node:13.8.0
+      # - image: amazon/aws-cli
+    working_directory: ~/
     steps:
+      - run:
+          name: Create Inventory
+          command: |
+            echo "[all]" > inventory
       - persist_to_workspace:
           root: ~/
           paths:
             - "inventory"
-      - run:
-          name: Create Inventory
-          command: |
-            touch inventory.txt
-            echo "[all]" > inventory.txt
       - error_handler
 
   #     aws ec2 describe-instances \
@@ -62,12 +62,13 @@ jobs:
   # --filters "Name=tag:Project, Values=Udacity3" \
   # --output text >> inventory
   display_Inventory:
+    working_directory: ~/
     docker:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
           at: ~/
-      - run: cat ~/inventory.txt
+      - run: cat inventory
       - error_handler
 
 workflows:
