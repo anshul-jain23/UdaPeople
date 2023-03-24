@@ -1,0 +1,40 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:13.8.0
+  working_directory: ~/
+
+commands:
+  print_pipeline_id:
+    description: "Print Pipeline Id"
+    steps:
+      - run: echo $CIRCLE_WORKFLOW_ID
+
+jobs:
+  Basic_job:
+    <<: *defaults
+    environment:
+      Circle_Compare_Url: My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>
+    steps:
+      - run:
+          name: "Print pipeline id"
+          command: echo  "This is pipeline id << pipeline.id >>"
+      - run: echo $Circle_Compare_Url
+      - run:
+          name: "Print Hello"
+          command: echo $Pipeline_User
+      - print_pipeline_id
+      # - run:
+      #     name: "Returning non zero value"
+      #     command: exit 1
+      - run:
+          command: echo "Some Error Occured!"
+          when: on_fail
+
+workflows:
+  say-hello-workflow:
+    jobs:
+      - Basic_job
