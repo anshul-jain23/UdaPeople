@@ -53,8 +53,8 @@ jobs:
       - run:
           name: Create Inventory
           command: |
-            touch inventory
-            echo "[all]" > inventory
+            touch inventory.txt
+            echo "[all]" > inventory.txt
       - error_handler
 
   #     aws ec2 describe-instances \
@@ -67,7 +67,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - run: cat ~/inventory
+      - run: cat ~/inventory.txt
       - error_handler
 
 workflows:
