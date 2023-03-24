@@ -32,7 +32,7 @@ jobs:
           name: "Print Hello"
           command: echo $Pipeline_User
       - error_handler
-  
+
   aws-cli-cred-setup:
     executor: aws-cli/default
     steps:
@@ -45,14 +45,28 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - "inventory"
       - run:
           name: Create Inventory
           command: |
+            touch inventory
             echo "[all]" > inventory
-            aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:Project, Values=Udacity3" \
-            --output text >> inventory
+      - error_handler
+
+  #     aws ec2 describe-instances \
+  # --query 'Reservations[*].Instances[*].PublicIpAddress' \
+  # --filters "Name=tag:Project, Values=Udacity3" \
+  # --output text >> inventory
+  display_Inventory:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/inventory
       - error_handler
 
 workflows:
@@ -64,5 +78,8 @@ workflows:
       - aws-cli-cred-setup:
           context: aws
       - Update_Inventory:
-          requires: 
+          requires:
             - aws-cli-cred-setup
+      - display_Inventory:
+          requires:
+            - Update_Inventory
