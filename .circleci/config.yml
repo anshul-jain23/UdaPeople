@@ -8,10 +8,12 @@ defaults: &defaults
   working_directory: ~/
 
 commands:
-  print_pipeline_id:
-    description: "Print Pipeline Id"
+  error_Handler:
+    description: "Error Handler"
     steps:
-      - run: echo $CIRCLE_WORKFLOW_ID
+      - run:
+          command: echo "Some Error Occured!"
+          when: on_fail
 
 jobs:
   Basic_job:
@@ -26,15 +28,26 @@ jobs:
       - run:
           name: "Print Hello"
           command: echo $Pipeline_User
-      - print_pipeline_id
-      # - run:
-      #     name: "Returning non zero value"
-      #     command: exit 1
+      - error_Handler
+
+  Update_Inventory:
+    docker:
+      - image: amazon/aws-cli
+    steps:
       - run:
-          command: echo "Some Error Occured!"
-          when: on_fail
+          name: Create Inventory
+          command: |
+            echo "[all]" > inventory
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:Project, Values=Udacity3" \
+            --output text >> inventory
+      - error_handler
 
 workflows:
-  say-hello-workflow:
+  Demo_workflow:
     jobs:
       - Basic_job
+  UdaPeople:
+    jobs:
+      - Update_Inventory
