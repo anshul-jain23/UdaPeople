@@ -8,7 +8,7 @@ defaults: &defaults
   working_directory: ~/
 
 commands:
-  error_Handler:
+  error_handler:
     description: "Error Handler"
     steps:
       - run:
@@ -28,7 +28,7 @@ jobs:
       - run:
           name: "Print Hello"
           command: echo $Pipeline_User
-      - error_Handler
+      - error_handler
 
   Update_Inventory:
     docker:
