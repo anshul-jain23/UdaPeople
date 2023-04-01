@@ -1,0 +1,5 @@
+sudo apt install xrdp
+sudo systemctl enable xrdp
+
+sudo cp -f ./index.html /var/www/html/
+cd /var/www/html/
