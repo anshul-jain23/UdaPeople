@@ -1,0 +1,4 @@
+IAM:
+name -> admin 
+key -> AKIA5RFDYNGUUDLU266A
+secret access -> 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
