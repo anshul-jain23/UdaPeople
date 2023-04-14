@@ -2,3 +2,8 @@ IAM:
 name -> admin 
 key -> AKIA5RFDYNGUUDLU266A
 secret access -> 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
+
+
+name -> AdminUser
+Key -> AKIA5RFDYNGUSRP2UW3E
+Secret Access -> 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
