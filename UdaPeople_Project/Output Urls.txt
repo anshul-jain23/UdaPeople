@@ -1,5 +1,5 @@
  [URL01] -> https://github.com/anshul-jain23/cdond-c3-projectstarter
- [URL02] -> http://udapeople-2d63b1c.s3-website-us-east-1.amazonaws.com
- [URL03] -> https://d2ngy927pm1xfi.cloudfront.net
- [URL04] -> http://44.211.72.19/api/status
+ [URL02] -> http://udapeople-16164d6.s3-website-us-east-1.amazonaws.com/
+ [URL03] -> http://d1gynny14xcdsl.cloudfront.net/#/employees
+ [URL04] -> http://3.86.115.81:3030/api/status
  [URL05] -> 
