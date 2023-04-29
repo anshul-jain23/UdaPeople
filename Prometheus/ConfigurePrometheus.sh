@@ -1,5 +1,7 @@
 start=`date +%s.%N`
 
+AK="AKIA5RFDYNGU63YA7Q3E"
+SK="dgUNIxX4r5+4N6PfXfegBtRgU+dD4mAHl6gKD4Fs"
 cmnd="-i .ssh/Udacity_keyPair.pem -o StrictHostKeyChecking=no"
 # echo $cmnd
 
@@ -55,15 +57,21 @@ echo ""
 #Add Node-exporter link to Prometheus configs
 Prometheus_node_exporter=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name, Values=UdaPeople-Prometheus-node-exporter" --output text)
 echo "before=$Prometheus_node_exporter="
-Prometheus_node_exporter=${Prometheus_node_exporter//$'\n'/}
+Prometheus_node_exporter=${Prometheus_node_exporter}
 echo "after=$Prometheus_node_exporter="
 echo ""
 echo "editing /etc/prometheus/prometheus.yml file"
-target="sed -i 's/prometheus-server:9100/$Prometheus_node_exporter:9100/' /etc/prometheus/prometheus.yml"
-echo "target string is == $target =="
+target="sed -i 's/_prometheusserver/$Prometheus_node_exporter:9100/' /etc/prometheus/prometheus.yml"
+target1="sed -i 's/prometheus_AK/$AK/' /etc/prometheus/prometheus.yml"
+target2="sed -i 's/prometheus_SK/$SK/' /etc/prometheus/prometheus.yml"
+echo "target string is |$target|"
+echo "target1 string is |$target1|"
+echo "target2 string is |$target2|"
 
-echo "replacing node-exporter endpoint"
+echo "replacing prometheus variables"
 ssh $cmnd ubuntu@$SERVER $target
+ssh $cmnd ubuntu@$SERVER $target1
+ssh $cmnd ubuntu@$SERVER $target2
 ssh $cmnd ubuntu@$SERVER "cat /etc/prometheus/prometheus.yml"
 echo ""
 #restart Prometheus service
@@ -72,7 +80,7 @@ echo ""
 #print server details
 echo "fetching prometheus server dns name"
 Prometheus_Server=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name, Values=UdaPeople-Prometheus-Server" --output text)
-Prometheus_Server=${Prometheus_Server//$'\n'/}
+Prometheus_Server=${Prometheus_Server:2}
 echo "Printing server details"
 echo "Prometheus-server $SERVER $Prometheus_Server:9090"
 echo "Node-Exporter $ExporterSERVER $Prometheus_node_exporter:9100"

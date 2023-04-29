@@ -10,4 +10,11 @@ scrape_configs:
 
   - job_name: 'node_exporter'
     static_configs:
-      - targets: ['prometheus-server:9100']
+      - targets: ['_prometheusserver']
+
+  - job_name: 'node'
+    ec2_sd_configs:
+      - region: us-east-1
+        access_key: prometheus_AK
+        secret_key: prometheus_SK
+        port: 9100
