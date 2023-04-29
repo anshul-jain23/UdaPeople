@@ -7,3 +7,7 @@ secret access -> CDyuZfvGNsExmORLHvM9eINcW1TyQd+QJMDtXb58
 name -> AdminUser
 Key -> AKIA5RFDYNGUSRP2UW3E
 Secret Access -> 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
+
+name-> prometheus_user
+Key-> AKIA5RFDYNGU63YA7Q3E
+Secret Access-> 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
