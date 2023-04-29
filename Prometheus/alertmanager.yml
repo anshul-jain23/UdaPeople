@@ -1,5 +1,5 @@
 route:
-  group_by: [Alert]
+  group_by: [Alertname]
   receiver: email-me
 
 receivers:
